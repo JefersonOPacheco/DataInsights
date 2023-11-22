@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS sexo(
 ) DEFAULT CHARSET=utf8;
 ```
 
-## Importação de Dados com Python
+### Importação de Dados com Python
 Importação de dados de arquivo excel para o banco de dados usando Python e Pandas.
 
 O código Python abaixo ilustra o processo de importação dos dados na tabela contratos:
@@ -173,6 +173,48 @@ for i in range(0, len(df), chunk_size):
 # Fechar a conexão
 cursor.close()
 conn.close()
+```
+
+## Criação da View para Indicadores
+Após a configuração do banco de dados, tabelas e a inserção dos dados, o próximo passo foi a criação de uma view. Essa view, nomeada folha_mensal_view, serve como um recurso essencial para facilitar a construção de indicadores de RH.
+
+A query SQL a seguir cria a view, fazendo junções com várias tabelas e calculando campos derivados, como idade e faixa etária dos colaboradores:
+
+``` SQL
+CREATE VIEW folha_mensal_view AS
+SELECT
+	ct.matricula AS 'Matricula',
+	UPPER(ct.nome_completo) AS 'Nome Completo',
+	ct.data_nascimento 'Data de Nascimento',
+	FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) AS Idade,
+    CASE
+		WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 20 AND 24 THEN '20-24'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 25 AND 29 THEN '25-29'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 30 AND 34 THEN '30-34'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 35 AND 39 THEN '35-39'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 40 AND 44 THEN '40-44'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 45 AND 49 THEN '45-49'
+        ELSE '50+'
+	END AS 'Faixa Etaria',
+	ct.data_admissao AS 'Data de Admissao',
+	ct.data_rescisao AS 'Data de Rescisao',
+	ct.data_ultima_promocao AS 'Data da ultima Promocao',
+	loc.id_local AS 'id Local',
+	emp.id_empresa AS 'id Empresa',
+	sit.id_situacao AS 'id Situacao',
+	vic.id_vinculo AS 'id Vinculo',
+	car.id_cargo AS 'id Cargo',
+	cp.id_cor_pele AS 'id Cor Pele',
+	sx.id_sexo AS 'id Sexo',
+	ct.salario AS 'Salario'
+FROM contratos ct
+LEFT JOIN locais loc ON ct.id_local = loc.id_local
+LEFT JOIN empresas emp ON loc.id_empresa = emp.id_empresa
+LEFT JOIN situacao sit ON sit.id_situacao = ct.id_situacao
+LEFT JOIN vinculo vic ON ct.id_vinculo = vic.id_vinculo
+LEFT JOIN cargos car ON ct.id_cargo = car.id_cargo
+LEFT JOIN cores_pele cp ON ct.id_cor_pele = cp.id_cor_pele
+LEFT JOIN sexo sx ON ct.id_sexo = sx.id_sexo;
 ```
 
 ## Visualização de Dados com Power BI
