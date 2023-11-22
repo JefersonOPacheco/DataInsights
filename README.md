@@ -109,3 +109,89 @@ for i in range(0, len(df), chunk_size):
 cursor.close()
 conn.close()
 ```
+
+## Criação da View para Indicadores
+Após a configuração do banco de dados, tabelas e a inserção dos dados, o próximo passo foi a criação de uma view. Essa view, nomeada folha_mensal_view, serve como um recurso essencial para facilitar a construção de indicadores de RH.
+
+### Query para Criação da View
+A query SQL a seguir cria a view, fazendo junções com várias tabelas e calculando campos derivados, como idade e faixa etária dos colaboradores:
+``` SQL
+CREATE VIEW folha_mensal_view AS
+SELECT
+	ct.matricula AS 'Matricula',
+	UPPER(ct.nome_completo) AS 'Nome Completo',
+	ct.data_nascimento 'Data de Nascimento',
+	FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) AS Idade,
+    CASE
+		WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 20 AND 24 THEN '20-24'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 25 AND 29 THEN '25-29'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 30 AND 34 THEN '30-34'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 35 AND 39 THEN '35-39'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 40 AND 44 THEN '40-44'
+        WHEN FLOOR(DATEDIFF(CURRENT_DATE, ct.data_nascimento) / 365.25) BETWEEN 45 AND 49 THEN '45-49'
+        ELSE '50+'
+	END AS 'Faixa Etaria',
+	ct.data_admissao AS 'Data de Admissao',
+	ct.data_rescisao AS 'Data de Rescisao',
+	ct.data_ultima_promocao AS 'Data da ultima Promocao',
+	loc.id_local AS 'id Local',
+	emp.id_empresa AS 'id Empresa',
+	sit.id_situacao AS 'id Situacao',
+	vic.id_vinculo AS 'id Vinculo',
+	car.id_cargo AS 'id Cargo',
+	cp.id_cor_pele AS 'id Cor Pele',
+	sx.id_sexo AS 'id Sexo',
+	ct.salario AS 'Salario'
+FROM contratos ct
+LEFT JOIN locais loc ON ct.id_local = loc.id_local
+LEFT JOIN empresas emp ON loc.id_empresa = emp.id_empresa
+LEFT JOIN situacao sit ON sit.id_situacao = ct.id_situacao
+LEFT JOIN vinculo vic ON ct.id_vinculo = vic.id_vinculo
+LEFT JOIN cargos car ON ct.id_cargo = car.id_cargo
+LEFT JOIN cores_pele cp ON ct.id_cor_pele = cp.id_cor_pele
+LEFT JOIN sexo sx ON ct.id_sexo = sx.id_sexo;
+```
+
+## Visualização de Dados com Power BI
+Após a preparação e importação dos dados para o banco rh_analytics, o próximo passo foi a visualização desses dados usando o Power BI. Utilizei a view folha_mensal_view para criar diversos dashboards e relatórios.
+
+### Conexão ao Banco de Dados
+O Power BI oferece uma forma intuitiva de se conectar ao MySQL. Selecionei o banco de dados rh_analytics e especificamente a view folha_mensal_view para começar a criar as visualizações.
+
+### Dashboards e Relatórios
+Neste link você consegue visualizar o Dashboard por completo:
+
+[https://app.powerbi.com/view?r=eyJrIjoiNzliZDYxOWYtMDdhNS00NzkyLTliZDUtZTM5MDNkZWE1MmFjIiwidCI6IjM5MDViZGRjLWU4NWMtNGMwNC1hOWJmLTRkMDgwZWQ1MjZmZCJ9](url)
+
+<div align="center">
+<img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/07cc4acd-059d-4caf-b7c5-f702476639c2" width="1000px" />
+</div>
+
+### Overview
+- Quantidade de admissões (admitidos no período).
+- Quantidade de demissões (demitidos no período).
+- Média salárial e Headcount ativo.
+- Total de má contratções e percentual de má contratações (má contratação são os colaboradores contratados e desligado por iniciativa do empregado ou empregador antés dos 90 dias de experiência).
+- Quantidade de admissões e demissões por mês.
+- Média da Taxa de turnover.
+- Headcount por faixa etária.
+- Quantidade e percentual de Headcount por gênero.
+
+<div align="center">
+<img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/b8779940-28fe-4b06-b5b7-5bbeb404583e" width="1000px" />
+</div>
+
+### Headcount
+- Headcount por mensal.
+- Tunover mensal.
+- Headcount por centro de custo.
+
+<div align="center">
+<img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/7181835c-9e08-4573-abb3-dd2364fb7786" width="1000px" />
+</div>
+
+### Detalhamento
+- Consegue visualizar no detalhe todas as informações em um formato de matriz.
+
+## Considerações Finais
+O projeto demonstrou como uma abordagem orientada a dados pode revolucionar as operações de RH. Desde a estruturação de um banco de dados relacional até a visualização interativa dos KPIs em Power BI, conseguimos transformar dados brutos em insights valiosos. Esses insights não apenas ajudam na gestão eficaz do headcount, mas também fornecem uma base sólida para decisões estratégicas em Recursos Humanos. Portanto, a implementação de People Analytics na empresa GourmetGo não é apenas um avanço tecnológico, mas um passo significativo em direção a uma gestão de RH mais informado e eficaz.
