@@ -1,58 +1,50 @@
 # Análise de Dados em People Analytics com MySQL e Power BI
 
+**Autor:** Jeferson Oliveira Pacheco  
+**Data:** 17 de outubro de 2023
+
+## Índice
+1. [Introdução](#introdução)
+2. [Contexto da Empresa](#contexto-da-empresa)
+3. [Problema de Negócio](#problema-de-negócio)
+4. [Objetivos](#objetivos)
+5. [Dados Analisados](#dados-analisados)
+6. [Ferramentas Utilizadas](#ferramentas-utilizadas)
+7. [Desenvolvimento](#desenvolvimento)
+8. [Visualização de Dados com Power BI](#visualização-de-dados-com-power-bi)
+9. [Considerações Finais](#considerações-finais)
+
 ## Introdução
-People Analytics é mais que uma tendência, é uma ferramenta estratégica essencial no RH. Este projeto ilustra sua aplicação na GourmetGo, uma empresa fictícia de fast food, utilizando MySQL e Power BI.
+Em um mundo movido a dados, a importância de People Analytics no RH é destacada neste projeto aplicado na GourmetGo, uma empresa fictícia de fast food. Utilizando MySQL para gestão de dados e Power BI para visualizações, abordamos o ciclo completo dos dados, desde a criação de um banco de dados relacional até o desenvolvimento de KPIs focados em headcount.
+
+## Contexto da Empresa
+A GourmetGo, inaugurada em 2022, enfrentou crescimento acelerado, ressaltando a necessidade de um sistema robusto de gerenciamento de dados para entender as dinâmicas operacionais e gerir eficazmente os recursos humanos.
 
 ## Problema de Negócio
-A GourmetGo, inaugurada em 2022, enfrentou um crescimento acelerado, destacando a necessidade de um sistema robusto de gerenciamento de dados, focando em armazenar informações dos colaboradores e rastrear KPIs de headcount.
+A GourmetGo precisava armazenar informações dos colaboradores eficientemente e rastrear KPIs relacionados ao headcount, sendo crucial para uma gestão eficaz dos recursos humanos.
 
 ## Objetivos
-- **Criar um Banco de Dados Relacional:** Desenvolver um banco de dados eficiente para informações dos colaboradores e outros dados relevantes.
-- **Estruturar as Tabelas:** Implementar uma estrutura de tabelas otimizada para consultas e análises complexas.
-- **Criar Indicadores de Acompanhamento Mensal:** Desenvolver KPIs focados em headcount e outros aspectos de RH.
+- **Criar um Banco de Dados Relacional:** Desenvolvimento de um banco de dados para gerenciar informações dos colaboradores.
+- **Estruturar as Tabelas:** Implementação de uma estrutura de tabelas otimizada para análises complexas.
+- **Criar Indicadores de Acompanhamento Mensal:** Desenvolvimento de KPIs centrados em headcount.
 
 ## Dados Analisados
-Utilizamos um conjunto de dados fictícios da GourmetGo, organizados em diversas tabelas inter-relacionadas. [Modelo lógico de dados](link-do-modelo).
+Utilização de dados fictícios da GourmetGo, organizados em tabelas inter-relacionadas, formando um modelo lógico coerente para facilitar consultas e análises.
 
 ## Ferramentas Utilizadas
-- MySQL
-- Python
-- Power BI
+- **MySQL:** Para armazenamento e gestão de dados.
+- **Python:** Para importação de dados.
+- **Power BI:** Para criação de visualizações impactantes.
 
 ## Desenvolvimento
 ### Configuração Inicial no MySQL
-Criação e configuração de um banco de dados específico `rh_analytics`.
-
-### Estruturação das Tabelas
-Design de tabelas abrangendo aspectos como estados, empresas, locais de trabalho, cargos, cores de pele, vínculos empregatícios e detalhes de contratos.
+Criação de um banco de dados chamado `rh_analytics` e estruturação das tabelas necessárias, abrangendo diversos aspectos da gestão de RH.
 
 ### Importação de Dados com Python
-Utilização do Python e Pandas para importação de dados de um arquivo Excel para a tabela contratos.
+Importação de dados para o banco de dados usando Python e Pandas, seguida pela criação de uma view essencial para a construção de indicadores de RH.
 
 ## Visualização de Dados com Power BI
-Desenvolvimento de dashboards e relatórios interativos para análise de dados. [Dashboard completo](link-do-dashboard).
+Criação de dashboards e relatórios para visualizar e analisar os dados, focando em KPIs como quantidade de admissões/demissões, média salarial, headcount ativo, turnover, entre outros.
 
 ## Considerações Finais
-O projeto demonstrou o impacto de uma abordagem orientada a dados no RH, transformando dados brutos em insights para decisões estratégicas em Recursos Humanos.
-
-## Conteúdo
-- [Introdução](#introdução)
-- [Problema de Negócio](#problema-de-negócio)
-- [Objetivos](#objetivos)
-- [Dados Analisados](#dados-analisados)
-- [Ferramentas Utilizadas](#ferramentas-utilizadas)
-- [Desenvolvimento](#desenvolvimento)
-- [Visualização de Dados com Power BI](#visualização-de-dados-com-power-bi)
-- [Considerações Finais](#considerações-finais)
-
-## Como Instalar e Executar o Projeto
-Instruções detalhadas para configuração. [Veja aqui](link-das-instruções).
-
-## Como Usar o Projeto
-Exemplos práticos e capturas de tela. [Saiba mais](link-para-uso).
-
-## Créditos
-Agradecimento aos colaboradores e referências.
-
-## Licença
-Informações sobre a licença do projeto.
+Este projeto destacou como a análise de dados pode transformar o RH, transformando dados brutos em insights valiosos para decisões estratégicas, marcando um passo significativo em direção a uma gestão de RH mais informada e eficaz.
