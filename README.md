@@ -36,16 +36,144 @@ Utilização de dados fictícios da GourmetGo, organizados em tabelas inter-rela
 </div>
 
 ## Ferramentas Utilizadas
-- ![MySQL](URL_do_ícone_MySQL) **MySQL:** Para armazenamento e gestão de dados.
-- ![Python](URL_do_ícone_Python) **Python:** Para importação de dados.
-- ![Power BI](URL_do_ícone_Power_BI) **Power BI:** Para criação de visualizações impactantes.
+- **MySQL:** Para armazenamento e gestão de dados.
+- **Python:** Para importação de dados.
+- **Power BI:** Para criação de visualizações impactantes.
 
 ## Desenvolvimento
 ### Configuração Inicial no MySQL
 Criação de um banco de dados chamado `rh_analytics` e estruturação das tabelas necessárias, abrangendo diversos aspectos da gestão de RH.
+``` SQL
+CREATE DATABASE rh_analytics
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf8_general_ci;
 
-### Importação de Dados com Python
-Importação de dados para o banco de dados usando Python e Pandas, seguida pela criação de uma view essencial para a construção de indicadores de RH.
+```
+### Estruturação das Tabelas:
+Após o banco de dados estar pronto, começamos a estruturar as tabelas necessárias. Elas abrangem diversos aspectos, como informações dos estados, empresas, locais de trabalho, cargos, cores de pele, vínculos empregatícios, situações de trabalho e detalhes de contratos.
+### Query de Criação das Tabela
+-  **contratos**
+``` SQL
+CREATE TABLE IF NOT EXISTS contratos(
+    matricula INT NOT NULL AUTO_INCREMENT,
+    nome_completo VARCHAR(80),
+    data_nascimento DATE,
+    data_admissao DATE,
+    data_rescisao DATE,
+    data_ultima_promocao DATE,
+    id_local INT,
+    id_situacao INT,
+    id_vinculo INT,
+    id_cargo INT,
+    id_sexo INT,
+    id_cor_pele INT,
+    salario DECIMAL(6,2),
+    PRIMARY KEY(matricula),
+    FOREIGN KEY(id_local) REFERENCES locais(id_local),
+    FOREIGN KEY(id_situacao) REFERENCES situacao(id_situacao),
+    FOREIGN KEY(id_vinculo) REFERENCES vinculo(id_vinculo),
+    FOREIGN KEY(id_cargo) REFERENCES cargos(id_cargo),
+    FOREIGN KEY(id_sexo) REFERENCES sexo(id_sexo),
+    FOREIGN KEY(id_cor_pele) REFERENCES cores_pele(id_cor_pele)
+) DEFAULT CHARSET=utf8;
+```
+-  **empresas**
+``` SQL
+CREATE TABLE IF NOT EXISTS empresas(
+
+) DEFAULT CHARSET=utf8;
+```
+-  **locais**
+``` SQL
+CREATE TABLE IF NOT EXISTS locais(
+
+) DEFAULT CHARSET=utf8;
+```
+-  **estados**
+``` SQL
+CREATE TABLE IF NOT EXISTS estados(
+
+) DEFAULT CHARSET=utf8;
+```
+-  **situacao**
+``` SQL
+CREATE TABLE IF NOT EXISTS situacao(
+
+) DEFAULT CHARSET=utf8;
+```
+-  **cores_pele**
+``` SQL
+CREATE TABLE IF NOT EXISTS cores_pele(
+
+) DEFAULT CHARSET=utf8;
+```
+-  **vinculo**
+``` SQL
+CREATE TABLE IF NOT EXISTS vinculo(
+
+) DEFAULT CHARSET=utf8;
+```
+-  **cargos**
+``` SQL
+CREATE TABLE IF NOT EXISTS cargos(
+
+) DEFAULT CHARSET=utf8;
+```
+-  **sexo**
+``` SQL
+CREATE TABLE IF NOT EXISTS sexo(
+
+) DEFAULT CHARSET=utf8;
+```
+
+## Importação de Dados com Python
+Importação de dados de arquivo excel para o banco de dados usando Python e Pandas.
+
+O código Python abaixo ilustra o processo de importação dos dados na tabela contratos:
+``` Python
+import pandas as pd
+import pymysql
+
+# Carregar o DataFrame do Excel
+df = pd.read_excel(r"Contratados.xlsx")
+
+# Renomear as colunas para corresponder às colunas da tabela MySQL
+df.rename(columns={
+    'Nome': 'nome_completo',
+    'DATA_NASCIMENTO': 'data_nascimento',
+    # ... Outros campos renomeados
+}, inplace=True)
+
+# Conectar ao banco de dados MySQL
+conn = pymysql.connect(
+    host='',  # Host
+    user='',  # Usuário
+    password='',  # Senha
+    db='rh_analytics'  # Nome do banco
+)
+
+cursor = conn.cursor()
+
+# Inserir os dados em pedaços
+chunk_size = 500
+for i in range(0, len(df), chunk_size):
+    df_chunk = df.iloc[i:i + chunk_size]
+    
+    for index, row in df_chunk.iterrows():
+        sql = """INSERT INTO contratos (
+            nome_completo, data_nascimento,
+            # ... Outros campos
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        
+        cursor.execute(sql, tuple(row))
+    
+    # Commit para salvar as alterações
+    conn.commit()
+
+# Fechar a conexão
+cursor.close()
+conn.close()
+```
 
 ## Visualização de Dados com Power BI
 Criação de dashboards e relatórios para visualizar e analisar os dados, focando em KPIs como quantidade de admissões/demissões, média salarial, headcount ativo, turnover, entre outros.
