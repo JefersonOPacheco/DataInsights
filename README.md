@@ -31,10 +31,14 @@ A GourmetGo precisava armazenar informações dos colaboradores eficientemente e
 ## Dados Analisados
 Utilização de dados fictícios da GourmetGo, organizados em tabelas inter-relacionadas, formando um modelo lógico coerente para facilitar consultas e análises.
 
+<div align="center">
+<img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/6f9c4fee-da49-489c-bd8c-b398c2885448" width="1000px" />
+</div>
+
 ## Ferramentas Utilizadas
-- **MySQL:** Para armazenamento e gestão de dados.
-- **Python:** Para importação de dados.
-- **Power BI:** Para criação de visualizações impactantes.
+- ![MySQL](URL_do_ícone_MySQL) **MySQL:** Para armazenamento e gestão de dados.
+- ![Python](URL_do_ícone_Python) **Python:** Para importação de dados.
+- ![Power BI](URL_do_ícone_Power_BI) **Power BI:** Para criação de visualizações impactantes.
 
 ## Desenvolvimento
 ### Configuração Inicial no MySQL
