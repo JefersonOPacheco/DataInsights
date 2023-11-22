@@ -13,3 +13,7 @@ Inaugurada em 2022, a empresa GourmetGo experimentou um crescimento acelerado qu
 
 ## Dados Analisados
 Para a análise, utilizamos um conjunto de dados fictícios que representam informações dos colaboradores da empresa GourmetGo. Esses dados estão organizados em diversas tabelas inter-relacionadas, formando um modelo lógico coerente que facilita consultas e análises. O modelo lógico de relacionamento entre as tabelas é apresentado abaixo.
+
+<div align="center">
+<img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/6f9c4fee-da49-489c-bd8c-b398c2885448" />
+</div>
