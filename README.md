@@ -52,7 +52,7 @@ DEFAULT COLLATE utf8_general_ci;
 ### Estruturação das Tabelas:
 Após o banco de dados estar pronto, começamos a estruturar as tabelas necessárias. Elas abrangem diversos aspectos, como informações dos estados, empresas, locais de trabalho, cargos, cores de pele, vínculos empregatícios, situações de trabalho e detalhes de contratos.
 ### Query de Criação das Tabela
--  **contratos**
+-  **Contratos**
 ``` SQL
 CREATE TABLE IF NOT EXISTS contratos(
     matricula INT NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS contratos(
     FOREIGN KEY(id_cor_pele) REFERENCES cores_pele(id_cor_pele)
 ) DEFAULT CHARSET=utf8;
 ```
--  **empresas**
+-  **Empresas**
 ``` SQL
 CREATE TABLE IF NOT EXISTS empresas(
 	id_empresa INT NOT NULL AUTO_INCREMENT,
@@ -85,7 +85,17 @@ CREATE TABLE IF NOT EXISTS empresas(
 	PRIMARY KEY(id_empresa)
 ) DEFAULT CHARSET=utf8;
 ```
--  **locais**
+-  **Estados**
+``` SQL
+CREATE TABLE IF NOT EXISTS estados(
+	id_estado INT NOT NULL AUTO_INCREMENT,
+	nome_estado VARCHAR(20),
+	sigla_estado CHAR(2),
+	regiao VARCHAR(20),
+	PRIMARY KEY(id_estado)
+) DEFAULT CHARSET=utf8;
+```
+-  **Locais**
 ``` SQL
 CREATE TABLE IF NOT EXISTS locais(
 	id_local INT NOT NULL AUTO_INCREMENT,
@@ -98,17 +108,7 @@ CREATE TABLE IF NOT EXISTS locais(
 	FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 ) DEFAULT CHARSET=utf8;
 ```
--  **estados**
-``` SQL
-CREATE TABLE IF NOT EXISTS estados(
-	id_estado INT NOT NULL AUTO_INCREMENT,
-	nome_estado VARCHAR(20),
-	sigla_estado CHAR(2),
-	regiao VARCHAR(20),
-	PRIMARY KEY(id_estado)
-) DEFAULT CHARSET=utf8;
-```
--  **situacao**
+-  **Situacao**
 ``` SQL
 CREATE TABLE IF NOT EXISTS situacao(
 	id_situacao INT NOT NULL AUTO_INCREMENT,
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS situacao(
 	PRIMARY KEY(id_situacao)
 ) DEFAULT CHARSET=utf8;
 ```
--  **cores_pele**
+-  **Cores_pele**
 ``` SQL
 CREATE TABLE IF NOT EXISTS cores_pele(
 	id_cor_pele INT NOT NULL AUTO_INCREMENT,
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS cores_pele(
 	PRIMARY KEY(id_cor_pele)
 ) DEFAULT CHARSET=utf8;
 ```
--  **vinculo**
+-  **Vinculo**
 ``` SQL
 CREATE TABLE IF NOT EXISTS vinculo(
 	id_vinculo INT NOT NULL AUTO_INCREMENT,
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS vinculo(
 
 ) DEFAULT CHARSET=utf8;
 ```
--  **cargos**
+-  **Cargos**
 ``` SQL
 CREATE TABLE IF NOT EXISTS cargos(
 	id_cargo INT NOT NULL AUTO_INCREMENT,
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS cargos(
 	PRIMARY KEY(id_cargo)
 ) DEFAULT CHARSET=utf8;
 ```
--  **sexo**
+-  **Sexo**
 ``` SQL
 CREATE TABLE IF NOT EXISTS sexo(
 	id_sexo INT NOT NULL AUTO_INCREMENT,
