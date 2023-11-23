@@ -243,6 +243,57 @@ LEFT JOIN cargos car ON ct.id_cargo = car.id_cargo
 LEFT JOIN cores_pele cp ON ct.id_cor_pele = cp.id_cor_pele
 LEFT JOIN sexo sx ON ct.id_sexo = sx.id_sexo;
 ```
+## Power Query
+
+Tabela **d_calendario** criada em linguagem M
+``` M
+let
+    // Fonte de dados genérica (substitua esta linha pelo nome da tabela atual)
+    FonteDados = f_fatos, 
+
+    // Definindo datas mínima e máxima manualmente
+    PrimeiraData = #date(2022, 1, 1),
+    UltimaData = #date(2023, 10, 19),
+
+
+    // Criação da lista de datas
+		Fonte = List.Dates(PrimeiraData, Number.From(UltimaData) - Number.From(PrimeiraData) + 1 ,#duration(1,0,0,0)),
+
+    // Conversão para tabela e renomeação da coluna
+    TabelaDatas = Table.FromList(Fonte, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    TabelaRenomeada = Table.RenameColumns(TabelaDatas,{{"Column1", "Data"}}),
+    
+    // Transformar coluna "Data" em tipo data
+    TabelaTipos = Table.TransformColumnTypes(TabelaRenomeada,{{"Data", type date}}),
+
+    // Adicionando colunas auxiliares
+    NomesMesesAbreviados = {"Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"},
+    TabelaFinal = 
+        Table.AddColumn(
+            Table.AddColumn(
+                Table.AddColumn(
+                    Table.AddColumn(
+                        Table.AddColumn(
+                            Table.AddColumn(
+                                Table.AddColumn(
+                                    Table.AddColumn(
+                                        Table.AddColumn(TabelaTipos, "Ano", each Date.Year([Data]), Int64.Type), 
+                                        "Mês", each Date.Month([Data]), Int64.Type),
+                                    "Dia", each Date.Day([Data]), Int64.Type),
+                                "Nome do Mês", each NomesMesesAbreviados{[Mês]-1}, type text),
+                            "Dia da Semana nome", each Date.DayOfWeekName([Data]), type text),
+                        "Dia da Semana", each Date.DayOfWeek([Data]), Int64.Type),
+                    "Número da Semana do Ano", each Date.WeekOfYear([Data]), Int64.Type),
+                "Trimestre", each Number.RoundDown((Date.Month([Data])-1)/3) + 1, Int64.Type),
+            "Nome do Trimestre", each Text.From([Trimestre]) & " Tri", type text)
+in
+    TabelaFinal
+```
+
+**Modelo de Relacionamentos**
+<div align="center">
+<img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/db9a82e5-8649-4796-b162-918ae0e92fb5" width="1000px" />
+</div>
 
 ## Visualização de Dados com Power BI
 Criação de dashboards e relatórios para visualizar e analisar os dados, focando em KPIs como quantidade de admissões/demissões, média salarial, headcount ativo, turnover, entre outros.
@@ -313,7 +364,8 @@ AVERAGEX(
 - Headcount por faixa etária.
 > Uso a mesma dax de headcount, dessa vez no eixo Y coloco a faixa etária
 
-- Quantidade e percentual de Headcount por gênero.> Uso a mesma dax de headcount, dessa vez no eixo Y coloco o gênero
+- Quantidade e percentual de Headcount por gênero.
+> Uso a mesma dax de headcount, dessa vez no eixo Y coloco o gênero
 
 <div align="center">
 <img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/b8779940-28fe-4b06-b5b7-5bbeb404583e" width="1000px" />
