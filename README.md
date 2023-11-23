@@ -80,49 +80,75 @@ CREATE TABLE IF NOT EXISTS contratos(
 -  **empresas**
 ``` SQL
 CREATE TABLE IF NOT EXISTS empresas(
-
+	id_empresa INT NOT NULL AUTO_INCREMENT,
+	nome_empresa VARCHAR(40),
+	PRIMARY KEY(id_empresa)
 ) DEFAULT CHARSET=utf8;
 ```
 -  **locais**
 ``` SQL
 CREATE TABLE IF NOT EXISTS locais(
-
+	id_local INT NOT NULL AUTO_INCREMENT,
+	id_empresa INT,
+	local VARCHAR(50),
+	centro_custo VARCHAR(30),
+	id_estado INT,
+	PRIMARY KEY(id_local),
+	FOREIGN KEY(id_empresa) REFERENCES empresas(id_empresa),
+	FOREIGN KEY(id_estado) REFERENCES estados(id_estado)
 ) DEFAULT CHARSET=utf8;
 ```
 -  **estados**
 ``` SQL
 CREATE TABLE IF NOT EXISTS estados(
-
+	id_estado INT NOT NULL AUTO_INCREMENT,
+	nome_estado VARCHAR(20),
+	sigla_estado CHAR(2),
+	regiao VARCHAR(20),
+	PRIMARY KEY(id_estado)
 ) DEFAULT CHARSET=utf8;
 ```
 -  **situacao**
 ``` SQL
 CREATE TABLE IF NOT EXISTS situacao(
-
+	id_situacao INT NOT NULL AUTO_INCREMENT,
+	desc_situacao VARCHAR(40),
+	PRIMARY KEY(id_situacao)
 ) DEFAULT CHARSET=utf8;
 ```
 -  **cores_pele**
 ``` SQL
 CREATE TABLE IF NOT EXISTS cores_pele(
-
+	id_cor_pele INT NOT NULL AUTO_INCREMENT,
+	nome_cor_pele VARCHAR(30),
+	PRIMARY KEY(id_cor_pele)
 ) DEFAULT CHARSET=utf8;
 ```
 -  **vinculo**
 ``` SQL
 CREATE TABLE IF NOT EXISTS vinculo(
+	id_vinculo INT NOT NULL AUTO_INCREMENT,
+	desc_vinculo VARCHAR(50),
+	PRIMARY KEY(id_vinculo)
 
 ) DEFAULT CHARSET=utf8;
 ```
 -  **cargos**
 ``` SQL
 CREATE TABLE IF NOT EXISTS cargos(
-
+	id_cargo INT NOT NULL AUTO_INCREMENT,
+	nome_cargo VARCHAR(40),
+	nivel_cargo VARCHAR(20),
+	PRIMARY KEY(id_cargo)
 ) DEFAULT CHARSET=utf8;
 ```
 -  **sexo**
 ``` SQL
 CREATE TABLE IF NOT EXISTS sexo(
-
+	id_sexo INT NOT NULL AUTO_INCREMENT,
+	sexo ENUM('M', 'F'),
+	desc_sexo VARCHAR(20),
+	PRIMARY KEY(id_sexo)
 ) DEFAULT CHARSET=utf8;
 ```
 
