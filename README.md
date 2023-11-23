@@ -296,76 +296,79 @@ in
 </div>
 
 ## Visualização de Dados com Power BI
+
 Criação de dashboards e relatórios para visualizar e analisar os dados, focando em KPIs como quantidade de admissões/demissões, média salarial, headcount ativo, turnover, entre outros.
 
 <div align="center">
-<img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/07cc4acd-059d-4caf-b7c5-f702476639c2" width="1000px" />
+    <img src="https://github.com/JefersonOPacheco/DataInsights/assets/151678235/07cc4acd-059d-4caf-b7c5-f702476639c2" width="1000px" />
 </div>
 
-### Overview
-- Quantidade de admissões (admitidos no período).
-``` DAX
-Admissoes = 
+## Overview
 
-CALCULATE(
-    COUNTROWS(f_fatos),
-    USERELATIONSHIP(d_calendario[Data], f_fatos[Data de Admissao])
-)
-```
-- Quantidade de demissões (demitidos no período).
-``` DAX
-Demissoes = 
-
-CALCULATE(
-    COUNTROWS(f_fatos),
-    f_fatos[id Situacao] = 2, --Situação 2 é usada para funcionarios demitidos
-    USERELATIONSHIP(d_calendario[Data], f_fatos[Data de Rescisao])
-)
-```
-- Média salárial e Headcount ativo.
-``` DAX
-MediaSalarial = 
-
-CALCULATE(
-    AVERAGE(f_fatos[Salario]),
-    f_fatos[id Situacao] <> 2 --Diferente da situação 2, que se refere aos demitidos
-)
-```
-- Total de má contratções e percentual de má contratações (má contratação são os colaboradores contratados e desligado por iniciativa do empregado ou empregador antés dos 90 dias de experiência).
-``` DAX
-MaContracoes = 
-
-CALCULATE(
-    [Admissoes],
-    FILTER(
-        f_fatos,
-        DATEDIFF(f_fatos[Data de Admissao], f_fatos[Data de Rescisao], DAY) < 90 && 
-        f_fatos[Data de Rescisao] <> BLANK() &&
-        f_fatos[id Vinculo] <> 2
+- **Quantidade de Admissões (admitidos no período)**:
+    ```DAX
+    // Cálculo de Admissões
+    Admissoes = CALCULATE(
+        COUNTROWS(f_fatos),
+        USERELATIONSHIP(d_calendario[Data], f_fatos[Data de Admissao])
     )
-)
-```
-- Quantidade de admissões e demissões por mês.
-``` DAX
+    ```
 
-```
-- Média da Taxa de turnover.
-``` DAX
-Media_Turnover_Mensal =
- 
-AVERAGEX(
-    VALUES(d_calendario[Nome do Mês]),
-    DIVIDE(
-        ([Admissoes] + [Demissoes]) / 2,
-        [Headcount]
+- **Quantidade de Demissões (demitidos no período)**:
+    ```DAX
+    // Cálculo de Demissões
+    Demissoes = CALCULATE(
+        COUNTROWS(f_fatos),
+        f_fatos[id Situacao] = 2, --Situação 2 é usada para funcionários demitidos
+        USERELATIONSHIP(d_calendario[Data], f_fatos[Data de Rescisao])
     )
-)
-```
-- Headcount por faixa etária.
-> Uso a mesma dax de headcount, dessa vez no eixo Y coloco a faixa etária
+    ```
 
-- Quantidade e percentual de Headcount por gênero.
-> Uso a mesma dax de headcount, dessa vez no eixo Y coloco o gênero
+- **Média Salarial e Headcount Ativo**:
+    ```DAX
+    // Cálculo da Média Salarial
+    MediaSalarial = CALCULATE(
+        AVERAGE(f_fatos[Salario]),
+        f_fatos[id Situacao] <> 2 --Diferente da situação 2, que se refere aos demitidos
+    )
+    ```
+
+- **Total de Má Contratações e Percentual de Má Contratações (má contratação são os colaboradores contratados e desligados por iniciativa do empregado ou empregador antes dos 90 dias de experiência e diferente da vínculo 2, que se refere aos temporários)**:
+    ```DAX
+    // Cálculo de Má Contratações
+    MaContracoes = CALCULATE(
+        [Admissoes],
+        FILTER(
+            f_fatos,
+            DATEDIFF(f_fatos[Data de Admissao], f_fatos[Data de Rescisao], DAY) < 90 && 
+            f_fatos[Data de Rescisao] <> BLANK() &&
+            f_fatos[id Vinculo] <> 2
+        )
+    )
+    ```
+
+- **Quantidade de Admissões e Demissões por Mês**:
+    ```DAX
+    // Código DAX correspondente
+    ```
+
+- **Média da Taxa de Turnover**:
+    ```DAX
+    // Cálculo da Média do Turnover Mensal
+    Media_Turnover_Mensal = AVERAGEX(
+        VALUES(d_calendario[Nome do Mês]),
+        DIVIDE(
+            ([Admissoes] + [Demissoes]) / 2,
+            [Headcount]
+        )
+    )
+    ```
+
+- **Headcount por Faixa Etária**:
+    > Uso a mesma DAX de headcount, dessa vez no eixo Y coloco a faixa etária.
+
+- **Quantidade e Percentual de Headcount por Gênero**:
+    > Uso a mesma DAX de headcount, dessa vez no eixo Y coloco o gênero.
 
 <div align="center">
 <img src = "https://github.com/JefersonOPacheco/DataInsights/assets/151678235/b8779940-28fe-4b06-b5b7-5bbeb404583e" width="1000px" />
